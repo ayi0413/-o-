@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffd9e7" />
+  <meta name="description" content="一个只准和好、不准生气的甜甜小网页 💗" />
+  <title>不许再烦我啦 🥺💗</title>
+  <style>
+    :root { --hot:#ff4386; --hot2:#ff6aa2; --ink:#573049; --soft:#fff3f8; --stroke:#df79a3; }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { margin:0; min-height:100%; }
+    body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif; color:var(--ink); overflow-x:hidden;
+      background:radial-gradient(circle at 12% 9%,#fff3d7 0%,transparent 27%),radial-gradient(circle at 89% 17%,#ffd2e4 0%,transparent 31%),linear-gradient(145deg,#ffdee9 0%,#fff0f4 48%,#ffd3e5 100%); }
+    .scene { min-height:100svh; display:flex; align-items:center; justify-content:center; padding:34px 18px 28px; position:relative; isolation:isolate; }
+    .glow { width:300px; height:300px; position:fixed; z-index:-1; border-radius:50%; filter:blur(60px); opacity:.4; pointer-events:none; }
+    .g1 { background:#fff6a8; left:-140px; top:10%; } .g2 { background:#ff8ebc; right:-160px; bottom:4%; }
+    .float { position:fixed; pointer-events:none; user-select:none; z-index:0; opacity:.8; animation:drift 5s ease-in-out infinite; }
+    .f1 { top:12%; left:9%; font-size:27px; transform:rotate(-13deg); } .f2 { top:19%; right:8%; font-size:26px; animation-delay:-1.8s; }
+    .f3 { bottom:16%; left:8%; font-size:23px; animation-delay:-2.5s; } .f4 { bottom:12%; right:9%; font-size:24px; animation-delay:-.7s; }
+    .shell { width:min(100%,430px); position:relative; z-index:1; text-align:center; }
+    .mini-tag { display:inline-flex; gap:7px; align-items:center; padding:8px 14px; border-radius:999px; margin-bottom:26px; color:#ae5380; font-size:12px; letter-spacing:1.2px; font-weight:750; background:rgba(255,255,255,.68); border:1px solid rgba(255,255,255,.85); box-shadow:0 5px 18px #ee98b429; }
+    .face { font-size:56px; line-height:1; filter:drop-shadow(0 8px 8px #d4829b38); display:flex; align-items:center; justify-content:center; gap:15px; margin-bottom:18px; transform-origin:center bottom; animation:face-bob 3.2s ease-in-out infinite; }
+    .face .heart { font-size:53px; filter:drop-shadow(0 0 10px #ff76b1a0); }
+    .card { position:relative; padding:39px 22px 31px; background:linear-gradient(160deg,#fffdfef5,#fff6faed); border:2px solid var(--stroke); border-radius:26px; box-shadow:0 20px 45px #ca60882c,0 4px 0 #eaa0bc42,inset 0 2px 0 #ffffff; overflow:hidden; }
+    .card:before,.card:after { content:'✿'; position:absolute; font-size:22px; color:#ed9bbb; opacity:.8; } .card:before {left:12px;top:12px; transform:rotate(-20deg)} .card:after {right:12px;bottom:10px;transform:rotate(15deg)}
+    h1 { font-size:clamp(25px,6.5vw,31px); line-height:1.38; letter-spacing:.4px; color:#44213b; margin:0 0 10px; font-weight:850; }
+    .subtitle { font-size:13px; line-height:1.7; color:#97667d; margin:0 0 24px; font-weight:500; }
+    .btn-area { display:flex; align-items:center; flex-direction:column; gap:13px; min-height:140px; }
+    button { font-family:inherit; cursor:pointer; border:0; touch-action:manipulation; }
+    .yes { color:#fff; font-size:20px; font-weight:850; padding:17px 35px; min-width:172px; max-width:100%; border-radius:999px; background:linear-gradient(135deg,#ff6e9f 0%,#ff347f 90%); box-shadow:0 8px 0 #d92b73,0 14px 24px #ff44875b; text-shadow:0 1px 1px #b61c5866; transition:font-size .3s,padding .3s,transform .2s,box-shadow .2s; position:relative; z-index:1; }
+    .yes:hover { filter:brightness(1.04); } .yes:active { transform:translateY(5px) scale(.97); box-shadow:0 3px 0 #d92b73,0 8px 16px #ff44874a; }
+    .no { background:#fffafc; color:#c06189; border:1px solid #f4b6cf; font-size:13px; font-weight:750; padding:11px 19px; min-height:39px; border-radius:999px; box-shadow:0 3px 10px #c6759733; transition:transform .2s,background .2s; max-width:100%; }
+    .no:active { transform:scale(.95); background:#ffedf4; } .no.shake {animation:wiggle .38s ease-in-out}
+    .tiny-note { min-height:19px; margin:8px 0 0; color:#c66d94; font-size:12px; font-weight:600; }
+    .under { font-size:12px; color:#ad7690; margin-top:22px; letter-spacing:.2px; }
+    .counter { font-size:11px; opacity:.7; margin-top:12px; min-height:15px; }
+    .hidden {display:none !important;}
+    .success .face { font-size:62px; }
+    .success h1 {font-size:29px;}
+    .success .card { padding:40px 24px 33px; }
+    .success-note { font-size:14px; line-height:2; color:#89536e; margin:9px 0 23px; }
+    .ticket { background:#fff0f7; border:1.5px dashed #efa5c3; border-radius:18px; padding:15px 12px; margin:0 0 24px; }
+    .ticket-title { color:#de5287; font-weight:850; font-size:15px; }
+    .ticket-text {font-size:12px;color:#a76a87;line-height:1.85;margin-top:6px;}
+    .again { padding:13px 22px; border-radius:999px; color:#de4883; background:#fff; border:1px solid #efadc8; font-weight:750; box-shadow:0 4px 12px #bd759126; }
+    .burst {position:fixed; pointer-events:none; z-index:10; font-size:24px; top:0; left:0; animation:popfly 1.5s ease-out forwards;}
+    @keyframes drift {0%,100%{translate:0 0;rotate:-8deg}50%{translate:0 -13px;rotate:8deg}}
+    @keyframes face-bob {0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-9px) rotate(3deg)}}
+    @keyframes wiggle {0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}
+    @keyframes popfly {0%{transform:translate(0,0) scale(.5) rotate(0);opacity:0}13%{opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1.3) rotate(var(--rot));opacity:0}}
+    @media(max-width:380px){.card{padding:32px 16px 25px}.face{font-size:48px}.mini-tag{margin-bottom:21px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms !important; transition-duration:.01ms !important;}}
+  </style>
+</head>
+<body>
+<main class="scene">
+  <div class="glow g1"></div><div class="glow g2"></div>
+  <span class="float f1">🌷</span><span class="float f2">✨</span><span class="float f3">💌</span><span class="float f4">🌸</span>
+  <section class="shell" id="ask" aria-label="和好小问卷">
+    <div class="mini-tag">💌 给最最亲爱的男朋友</div>
+    <div class="face" aria-hidden="true"><span>🥺</span><span class="heart">💗</span></div>
+    <div class="card">
+      <h1>现在还烦不烦我？</h1>
+      <p class="subtitle">请认真回答！不可以嘴硬哦～<br>我真的很想跟你和好嘛 🥹</p>
+      <div class="btn-area">
+        <button class="yes" id="yes" type="button">不烦啦 💗</button>
+        <button class="no" id="no" type="button">还在烦 😤</button>
+      </div>
+      <p class="tiny-note" id="note" aria-live="polite">（悄悄说：第一个答案特别可爱！）</p>
+    </div>
+    <div class="under">♡ 今天也想被男朋友喜欢 ♡</div>
+    <div class="counter" id="counter" aria-live="polite"></div>
+  </section>
+  <section class="shell success hidden" id="success" aria-label="和好成功" aria-live="polite">
+    <div class="mini-tag">🎉 和好成功 · 恋爱继续营业</div>
+    <div class="face" aria-hidden="true"><span>🥰</span><span class="heart">💖</span></div>
+    <div class="card">
+      <h1>耶！！男朋友不烦我啦！</h1>
+      <p class="success-note">我就知道你最好啦～<br>那我们不生气了好不好？<br>以后也要一起开开心心的！💕</p>
+      <div class="ticket">
+        <div class="ticket-title">🎟️ 男朋友专属和好券</div>
+        <div class="ticket-text">凭此券可兑换：<br>一个超大抱抱 🫂＋无数个亲亲 😘<br>有效期：永远有效 ♡</div>
+      </div>
+      <button class="yes" id="hug" type="button" style="font-size:17px;padding:14px 28px">领取抱抱 💞</button>
+      <p class="tiny-note" id="hugNote" aria-live="polite">♡ 不许反悔哦 ♡</p>
+    </div>
+    <div class="under"><button class="again" id="again" type="button">再玩一次 ↻</button></div>
+  </section>
+</main>
+<script>
+  (() => {
+    const lines = [
+      '真的吗？再想想嘛 🥺',
+      '别烦我啦，好不好嘛 🥹',
+      '求求你不要拒绝我嘛 💗',
+      '给我一次机会好不好 😭',
+      '我会乖乖的！真的！🐱',
+      '还不原谅我嘛，呜呜 🥺',
+      '抱一下就不生气了嘛 🫂',
+      '亲亲也不可以嘛 😚',
+      '好啦好啦，我知道错啦 💞',
+      '拜托拜托，就选上面那个嘛 🙏',
+      '你最好了！不烦我了嘛 ❤️',
+      '再戳我我也不会同意的 😤',
+      '男朋友大人，求放过～ 🥹',
+      '不许再烦了啦！💗'
+    ];
+    const tips = [
+      '（给你一个重新选择的机会哦）',
+      '（粉色按钮是不是更好看一点？）',
+      '（小猫咪已经委屈巴巴了…）',
+      '（你的宝贝正在努力撒娇中！）',
+      '（和好以后奖励抱抱哦 ♡）',
+      '（你不心疼这只小可怜嘛🥹）'
+    ];
+    const $ = id => document.getElementById(id);
+    const yes=$('yes'), no=$('no'), ask=$('ask'), success=$('success');
+    let clicks=0, hugs=0;
+    function hearts(count, origin){
+      const rect = origin.getBoundingClientRect();
+      for(let i=0;i<count;i++){
+        const s=document.createElement('span'); s.className='burst';
+        s.textContent=['💗','💕','💖','🌸','✨','💞'][Math.floor(Math.random()*6)];
+        s.style.left=(rect.left+rect.width*(.2+Math.random()*.6))+'px';
+        s.style.top=(rect.top+rect.height*.42)+'px';
+        s.style.setProperty('--dx', (Math.random()*340-170)+'px');
+        s.style.setProperty('--dy', (-90-Math.random()*270)+'px');
+        s.style.setProperty('--rot', (Math.random()*360-180)+'deg');
+        s.style.animationDelay=(Math.random()*.3)+'s';
+        document.body.appendChild(s);
+        s.addEventListener('animationend',()=>s.remove(),{once:true});
+        setTimeout(()=>s.remove(),2100);
+      }
+    }
+    no.addEventListener('click',()=>{
+      clicks++;
+      no.textContent=lines[(clicks-1)%lines.length];
+      no.classList.remove('shake'); void no.offsetWidth; no.classList.add('shake');
+      $('note').textContent=tips[(clicks-1)%tips.length];
+      $('counter').textContent=`你已经拒绝了 ${clicks} 次，但我还没有放弃哼！`;
+      yes.style.fontSize=(20+Math.min(clicks,10)*1.6)+'px';
+      yes.style.padding=`${17+Math.min(clicks,10)*1.35}px ${35+Math.min(clicks,10)*3.4}px`;
+      if(clicks%2===0) hearts(3,no);
+    });
+    yes.addEventListener('click',()=>{
+      ask.classList.add('hidden'); success.classList.remove('hidden');
+      hearts(44,success.querySelector('.card'));
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+    $('hug').addEventListener('click',()=>{
+      hugs++;
+      $('hugNote').textContent=hugs===1?'抱紧啦！！不准再生气啦！🫂💕':`已经抱抱 ${hugs} 次啦！以后也要一直抱抱 💖`;
+      hearts(19,$('hug'));
+    });
+    $('again').addEventListener('click',()=>{
+      clicks=0; hugs=0; no.textContent='还在烦 😤';
+      yes.style.fontSize=''; yes.style.padding='';
+      $('note').textContent='（悄悄说：第一个答案特别可爱！）';
+      $('counter').textContent=''; $('hugNote').textContent='♡ 不许反悔哦 ♡';
+      success.classList.add('hidden'); ask.classList.remove('hidden');
+    });
+  })();
+</script>
+</body>
+</html>
